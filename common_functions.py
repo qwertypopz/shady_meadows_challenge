@@ -1,3 +1,5 @@
+from time import sleep
+
 from webdriverwrapper import Firefox
 import logging
 
@@ -25,3 +27,15 @@ def setup_logger():
     log.info('Log function has been added')
     return log
 
+def skip_splash(driver, log):
+    '''
+    Skips the splash page
+    :param driver: Allows use of web browser
+    :param log: For testing and diagnostics
+    :return: none
+    '''
+    log.info("Skipping splash screen")
+    while not driver.get_elm(xpath='//*[@id="closeModal"]').is_displayed():
+        driver.get_elm(xpath='//*[@id="next"]').click()
+        except:
+            driver.get_elm(xpath='//*[@id="closeModal"]').click()

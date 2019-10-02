@@ -99,7 +99,8 @@ def page_5(driver, log):
     if driver.find_element_by_text(message).is_displayed():
         log.info("Validated")
         close = driver.get_elm(xpath='//*[@id="closeModal"]')
-        #close.click()
+        close.click()
+        driver.quit()
         return True
     return False
 
