@@ -32,7 +32,7 @@ def skip_splash(driver, log):
     Skips the splash page
     :param driver: Allows use of web browser
     :param log: For testing and diagnostics
-    :return: none
+    :return: None
     '''
     log.info("Skipping splash screen")
     while driver.get_elm(xpath='/html/body/div/div[1]/div[2]/div/div').is_displayed():
