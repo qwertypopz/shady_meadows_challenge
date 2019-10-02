@@ -1,4 +1,5 @@
 # Default ignored files
 /workspace.xml
-../geckodriver*
+../geckodriver.exe
+*.log
 ../__pycache__
