@@ -35,7 +35,9 @@ def skip_splash(driver, log):
     :return: none
     '''
     log.info("Skipping splash screen")
-    while not driver.get_elm(xpath='//*[@id="closeModal"]').is_displayed():
-        driver.get_elm(xpath='//*[@id="next"]').click()
+    while driver.get_elm(xpath='/html/body/div/div[1]/div[2]/div/div').is_displayed():
+        try:
+            driver.get_elm(xpath='//*[@id="next"]').click()
         except:
             driver.get_elm(xpath='//*[@id="closeModal"]').click()
+            quit()
