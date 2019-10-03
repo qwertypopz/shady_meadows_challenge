@@ -12,7 +12,7 @@ def splash_exists(driver, log):
     '''
     Make sure AiT homepage has a splash page
     :param logger: For testing and diagnostics
-    :return: Returns boolean value if splash page exists or not
+    :return: Boolean value declaring pass (True) or fail (False)
     '''
     common_functions.navigate_to_main(driver, log)
     #It's ugly but the element has no name or id
@@ -23,7 +23,7 @@ def page_1(driver, log):
     '''
     Checks first message of welcome splash
     :param log: For testing and diagnostics
-    :return: Returns boolean value based on message content
+    :return: Boolean value declaring pass (True) or fail (False)
     '''
     log.info("Validating Splash - Page 1")
     message_header = "Welcome to Restful Booker Platform"
@@ -42,7 +42,7 @@ def page_2(driver, log):
     '''
     Checks second message of welcome splash after checking preceding page
     :param log: For testing and diagnostics
-    :return: Returns boolean value based on message content
+    :return: Boolean value declaring pass (True) or fail (False)
     '''
     page_1(driver, log)
     log.info("Validating Splash - Page 2")
@@ -59,7 +59,7 @@ def page_3(driver, log):
     '''
     Checks third message of welcome splash after checking preceding pages
     :param log: For testing and diagnostics
-    :return: Returns boolean value based on message content
+    :return: Boolean value declaring pass (True) or fail (False)
     '''
     page_2(driver, log)
     log.info("Validating Splash - Page 3")
@@ -75,7 +75,7 @@ def page_4(driver, log):
     '''
     Checks fourth message of welcome splash after checking preceding pages
     :param log: For testing and diagnostics
-    :return: Returns boolean value based on message content
+    :return: Boolean value declaring pass (True) or fail (False)
     '''
     page_3(driver, log)
     log.info("Validating Splash - Page 4")
@@ -91,7 +91,7 @@ def page_5(driver, log):
     '''
     Checks fifth message of welcome splash after checking preceding pages
     :param log: For testing and diagnostics
-    :return: Returns boolean value based on message content
+    :return: Boolean value declaring pass (True) or fail (False)
     '''
     page_4(driver, log)
     log.info("Validating Splash - Page 5")
@@ -109,7 +109,7 @@ def validate_splash_message(log):
     '''
     Checks that the splash page has the expected message
     :param log: For testing and diagnostics
-    :return: Returns boolean value based on existence of welcome message
+    :return: Boolean value declaring pass (True) or fail (False)
     '''
     driver = common_functions.setup_driver(log)
     if splash_exists(driver, log):

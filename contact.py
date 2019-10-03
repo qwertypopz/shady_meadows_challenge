@@ -7,24 +7,36 @@ import sys
 def fill_contact(log):
     '''
     Complete contact information found at the bottom of AiT homepage
-    :param logger: For testing and diagnostics
-    :return: None
+    :param log: For testing and diagnostics
+    :return: Boolean value declaring pass (True) or fail (False)
     '''
+
+    input_name = "Tommy Nguyen"
+    input_email = "tommy.nguyen@fakelook.com"
+    input_phone = "703-801-9999"
+    input_subject = "Reservation Questions"
+    input_message = "This is a test email message"
+
     driver = common_functions.setup_driver(log)
     common_functions.navigate_to_main(driver, log)
     common_functions.skip_splash(driver, log)
-    name_field = driver.get_elm(xpath='//*[@id="name"]')
-    name_field.send_keys('Tommy Nguyen')
-    email = driver.get_elm(xpath='//*[@id="email')
-    email.send_keys('nhatanguyen@outlook.com')
-    phone = driver.get_elm(xpath='//*[@id="phone')
-    phone.send_keys('703-801-4416')
-    message = driver.get_elm(xpath='//*[@id="description')
-    message.send_keys('This is a test email')
-    #driver.get_elm(xpath='//*[@id="submitContact"]')
-    driver.get_elm(css_selector='#submitContact')
-
-
+    field_name = driver.get_elm(css_selector='#name')
+    log.info("Filling out Name field: " + input_name)
+    field_name.send_keys(input_name)
+    field_email = driver.get_elm(css_selector='#email')
+    log.info("Filling out Email field: " + input_email)
+    field_email.send_keys(input_email)
+    field_phone = driver.get_elm(css_selector='#phone')
+    log.info("Filling out Phone field: " + input_phone)
+    field_phone.send_keys(input_phone)
+    field_subject = driver.get_elm(css_selector='#subject')
+    log.info("Filling out Subject field: " + input_subject)
+    field_subject.send_keys(input_subject)
+    field_message = driver.get_elm(css_selector='#description')
+    log.info("Filling out Message field: " + input_message)
+    field_message.send_keys(input_message)
+    driver.get_elm(css_selector='#submitContact').click()
+    return driver.find_element_by_text('Thanks for getting in touch').is_displayed()
 
 if __name__ == '__main__':
     log = common_functions.setup_logger()
