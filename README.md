@@ -86,9 +86,9 @@ a new test.
     * Navigates to the main page
 
 **setup_driver(log)**
-*Parameters
+* Parameters
     * log: Utilizes logging functionality for testing and diagnostic purposes
-*Summary
+* Summary
     * This is a necessary function if the test requires any action to be done through a web browser.
 
 **setup_log()**
