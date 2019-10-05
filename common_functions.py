@@ -1,49 +1,85 @@
 from time import sleep
-from selenium.webdriver import ActionChains
+from selenium.webdriver.common.action_chains import ActionChains
 from webdriverwrapper import Firefox
 
 import datetime
 import logging
 
-def make_reservation(room, date_start, duration, driver, log):
+import webdriverwrapper.unittest.testcase
 
-    input_first = "Tommy"
-    input_last = "Nguyen"
-    input_email = "tommy.nguyen@fakelook.com"
-    input_phone = "703-801-9999"
+def admin_login(driver, log):
+    '''
+    Log in as administrator
+    :param driver: Allows use of browser
+    :param log: For testing and diagnostics
+    :return:
+    '''
+    log.info("Navigating to admin panel")
+    driver.get("https://automationintesting.online/#/admin")
+    #skip_splash(driver,log)
+    try:
+        driver.get_elm(css_selector='#username').send_keys('admin')
+        driver.get_elm(css_selector='#password').send_keys('password')
+        driver.get_elm(css_selector='#doLogin').click()
+    except:
+        pass
+
+def make_reservation(room, start_date, duration, driver, log):
+    '''
+    Navigates to the main page, skips the splash screen, and creates a reservation under the specified room for a test
+    customer
+    :param room: String variable denoting type of reservation ['Single', 'Double', 'Family', 'Suite']
+    :param start_date: datetime variable stating reservation start date Can be defined by datetime.datetime(YYYY, MM, DD)
+    :param duration: integer variable stating duration of reservation in days
+    :param driver: Allows use of browser
+    :param log: For testing and diagnostics
+    :return: Boolean value declaring success (True) or failure (False)
+    '''
+    input_first = "Automation"
+    input_last = "Test"
+    input_email = "automation.test@fakelook.com"
+    input_phone = "703-888-9999"
 
     navigate_to_main(driver, log)
     skip_splash(driver, log)
 
     #Start Booking Process
     log.info("Start booking process for a " + room)
-    driver.get_elm(xpath='//*[contains(text(), "' + room + '")]/../button').click()
+    reservation = driver.get_elm(xpath='//*[contains(text(), "' + room + '")]/../button')
+    driver.execute_script("return arguments[0].scrollIntoView();", reservation)
+    reservation.click()
 
-    #Find the calendar with the start date
-    calendar = driver.find_element_by_text(datetime.datetime.now().strftime("%B %Y"))
-    calendar_start = date_start.strftime("%B %Y")
-    if date_start > datetime.datetime.now():
-        button_text = 'Next'
-    else:
-        button_text = 'Back'
-    while calendar.text != calendar_start:
-        driver.get_elm(text=button_text).click()
+    navigate_calendar(start_date, driver, log)
 
     #Do that drag and drop thing
-    day_start = date_start.strftime("%d")
-    date_end = date_start + datetime.timedelta(days=duration)
-    day_end = date_end.strftime("%d")
-    if day_start > day_end:
-        class_attribute = "rbc-off-range"
+    start_day = start_date.strftime("%d")
+    if datetime.datetime.now().strftime("%Y-%m-%d") == start_date.strftime("%Y-%m-%d"):
+        start_class_attribute = '"rbc-date-cell rbc-now rbc-current"'
+    elif start_day == datetime.datetime.now().strftime("%d"):
+        start_class_attribute = '"rbc-date-cell rbc-current"'
     else:
-        class_attribute = "rbc-day-bg"
+        start_class_attribute = '"rbc-date-cell"'
+    end_date = start_date + datetime.timedelta(days=duration)
+    end_day = end_date.strftime("%d")
+
+    if start_date.strftime("%m") == end_date.strftime("%m"):
+        end_class_attribute = '"rbc-date-cell"'
+    else:
+        end_class_attribute = '"rbc-date-cell rbc-off-range"'
+
+    ''' Code changed 2019.10.04. Rough draft 
     drag_start = driver.get_elm(xpath='//a[contains(text(), "' + day_start +
                                       '")]/ancestor::div[//div[@class="rbc-day-bg"] and @class="rbc-date-cell"]')
     drag_end = driver.get_elm(xpath='//a[contains(text(), "' + day_end + '")]/ancestor::div[//div[@class="' +
                                     class_attribute + '"] and @class="rbc-date-cell"]')
+    '''
+    log.info("Setting reservation range")
+    drag_start = driver.get_elm(xpath='//a[contains(text(), "' + start_day + '")]/..[@class=' +
+                                      start_class_attribute + ']')
+    drag_end = driver.get_elm(xpath='//a[contains(text(), "' + end_day + '")]/..[@class=' +
+                                    end_class_attribute + ']')
     ac = ActionChains(driver)
     ac.drag_and_drop(drag_start, drag_end).perform()
-    sleep(5)
 
     #Complete booking form
     log.info("Filling out booking information")
@@ -60,11 +96,37 @@ def make_reservation(room, date_start, duration, driver, log):
     log.info("Filling out Phone field: " + input_phone)
     field_phone.send_keys(input_phone)
 
-    driver.get_elm(text="Book").click()
+    driver.get_elm(xpath='//*[@name="phone"]/../../button[contains(text(), "Book")]').click()
+
+    # Occassionally fails the first attempt for reasons unknown. Too fast?
+    try:
+        success = driver.get_elm(xpath='//h3[contains(text(),"Booking Successful!")]').is_displayed()
+    except Exception as error:
+        log.info(str(error))
+        log.info("Failed to get success message. Trying again")
+        sleep(3)
+        success = driver.get_elm(xpath='//h3[contains(text(),"Booking Successful!")]').is_displayed()
+    if success:
+        log.info("Reservation form has been booked")
+    return success
+
+def navigate_calendar(start_date, driver, log):
     '''
-    '//div[@class="rbc-day-bg" and //a[contains(text(),"05")]]'
-    '//a[contains(text(), "05")]/ancestor::div[@class="rbc-day-bg"]'
+    Navigates to the correct calendar month to reserve room
+    :param start_date: datetime variable stating reservation start date Can be defined by datetime.datetime(YYYY, MM, DD)
+    :param driver: Allows user of web browser
+    :param log: For testing and diagnostics
+    :return:
     '''
+    log.info("Navigating to the correct calendar month")
+    calendar = driver.find_element_by_text(datetime.datetime.now().strftime("%B %Y"))
+    calendar_start = start_date.strftime("%B %Y")
+    if start_date > datetime.datetime.now():
+        button_text = 'Next'
+    else:
+        button_text = 'Back'
+    while calendar.text != calendar_start:
+        driver.get_elm(text=button_text).click()
 
 
 def navigate_to_main(driver, log):
@@ -112,3 +174,66 @@ def skip_splash(driver, log):
             driver.get_elm(xpath='//*[@id="closeModal"]').click()
             #Utilizing break due to while condition being poorly defined. Will always be true
             break
+
+def verify_reservation_via_report(room, start_date, driver, log):
+    '''
+
+    Functions assume reservation will be under the name "Automation Test"
+    :param room: String variable denoting type of reservation ['Single', 'Double', 'Family', 'Suite']
+    :param date_start: datetime variable stating reservation start date Can be defined by datetime.datetime(YYYY, MM, DD)
+    :param driver: Allows use of browser
+    :param log: For testing and diagnostics
+    :return: Boolean value declaring success (True) or failure (False)
+    '''
+    name = "John Doe"
+    room_num = {
+        "Twin":"101",
+        "Single":"102"
+    }
+    admin_login(driver, log)
+    driver.get_elm(text="Report").click()
+    navigate_calendar(start_date, driver, log)
+    banners = driver.get_elms(xpath='//div[@class="rbc-event-content"]/text()')
+    for banner in banners:
+        log.info("Reservation: " + banner)
+
+def verify_reservation_via_rooms(room, start_date, driver, log):
+    '''
+    :param room: String variable denoting type of reservation ['Single', 'Double', 'Family', 'Suite']
+    :param date_start: datetime variable stating reservation start date Can be defined by datetime.datetime(YYYY, MM, DD)
+    :param driver: Allows use of browser
+    :param log: For testing and diagnostics
+    :return: Boolean value declaring success (True) or failure (False)
+    '''
+    ids = {
+        "Twin":"room1",
+        "Single":"room2"
+        #"Family":"room3",
+        #"Suite":"room4"
+    }
+    costs = {
+        "Single":19,
+        "Double":149,
+        "Family":349,
+        "Suite":500
+    }
+    admin_login(driver, log)
+    try:
+        driver.get_elm(text="Rooms").click()
+    except:
+        log.info("Trying again in 3 seconds")
+        sleep(3)
+        driver.get_elm(text="Rooms").click()
+
+    try:
+        room_num = driver.get_elm(xpath='//*[@id="' + ids.get(room) + '"]')
+    except:
+        sleep(3)
+        room_num = driver.get_elm(xpath='//*[@id="' + ids.get(room) + '"]')
+
+    room_num.click()
+
+    reservation = driver.get_elm(xpath='//*[contains(text(), "' + start_date.strftime("%Y-%m-%d") + '")]')
+    log.info(reservation.is_displayed())
+    driver.quit()
+    return reservation.is_displayed()

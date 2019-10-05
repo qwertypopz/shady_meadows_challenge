@@ -11,9 +11,9 @@ def fill_contact(log):
     :return: Boolean value declaring pass (True) or fail (False)
     '''
 
-    input_name = "Tommy Nguyen"
-    input_email = "tommy.nguyen@fakelook.com"
-    input_phone = "703-801-9999"
+    input_name = "Automation Test"
+    input_email = "automation.test@fakelook.com"
+    input_phone = "703-888-9999"
     input_subject = "Reservation Questions"
     input_message = "This is a test email message"
 
