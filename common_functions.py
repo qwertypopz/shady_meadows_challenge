@@ -1,3 +1,8 @@
+'''
+Collection of common functions
+author: Tommy Nguyen
+date: 2019.10.04
+'''
 from time import sleep
 from selenium.webdriver.common.action_chains import ActionChains
 from webdriverwrapper import Firefox
@@ -63,13 +68,6 @@ def make_reservation(room, start_date, duration, driver, log):
         end_class_attribute = '"rbc-date-cell"'
     else:
         end_class_attribute = '"rbc-date-cell rbc-off-range"'
-
-    ''' Code changed 2019.10.04. Rough draft 
-    drag_start = driver.get_elm(xpath='//a[contains(text(), "' + day_start +
-                                      '")]/ancestor::div[//div[@class="rbc-day-bg"] and @class="rbc-date-cell"]')
-    drag_end = driver.get_elm(xpath='//a[contains(text(), "' + day_end + '")]/ancestor::div[//div[@class="' +
-                                    class_attribute + '"] and @class="rbc-date-cell"]')
-    '''
     log.info("Setting reservation range")
     drag_start = driver.get_elm(xpath='//a[contains(text(), "' + start_day + '")]/..[@class=' +
                                       start_class_attribute + ']')
@@ -95,11 +93,10 @@ def make_reservation(room, start_date, duration, driver, log):
 
     driver.get_elm(xpath='//*[@name="phone"]/../../button[contains(text(), "Book")]').click()
 
-    # Occassionally fails the first attempt for reasons unknown. Too fast?
+    # Occassionally fails the first attempt. Possibly due to network/browser issues. Look at wait_for_element()
     try:
         success = driver.get_elm(xpath='//h3[contains(text(),"Booking Successful!")]').is_displayed()
     except Exception as error:
-        log.info(str(error))
         log.info("Failed to get success message. Trying again")
         sleep(3)
         success = driver.get_elm(xpath='//h3[contains(text(),"Booking Successful!")]').is_displayed()
