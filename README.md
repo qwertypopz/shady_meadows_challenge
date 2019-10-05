@@ -48,7 +48,7 @@ Commonly used functions have been compiled into the *common_functions.py* file w
 energy when creating new functionality to the smoke test. Code with specific use-case are typically
 organized in their respective file. Listed below are the commonly used functions that would be helpful when creating
 a new test.
----
+
 #####admin_login(driver, log)
 * Parameters
     * driver: Allows the program to utilize the browser in the same manner a user would.
@@ -56,7 +56,7 @@ a new test.
 * Summary
     * Logs into the back end of the website for tasks specific to website administrators such as records, business
     queries, and reservations.
----
+
 #####make_reservation(room, start_date, duration, driver, log)
 * Parameters
     * room: Case-sensitive String value. Current site iteration only allows *Twin* or *Single*.
@@ -68,7 +68,7 @@ a new test.
     * The main user-side function of the website. Developers are able to emulate user behavior in making a reservation
     by passing in the required parameters. The function itself enters dummy personal information to complete the
     reservation form before submission.
- ---
+
 #####navigate_calendar(start_date, driver, log)
 * Parameters
     * start_date: datetime variable marking the starting date of the reservation
@@ -77,24 +77,24 @@ a new test.
 * Summary
     * The website opens up on the current month's calendar. If the test case requires a starting date further in the 
     future or past, then this function will navigate through the calendar until the proper calendar month is displayed.
----
+
 #####navigate_to_main(driver, log)
 * Parameters
     * driver: Allows the program to utilize the browser in the same manner a user would
     * log: Utilizes logging functionality for testing and diagnostic purposes
 * Summary
     * Navigates to the main page
----
+
 #####setup_driver(log)
 *Parameters
     * log: Utilizes logging functionality for testing and diagnostic purposes
 *Summary
     * This is a necessary function if the test requires any action to be done through a web browser.
----
+
 #####setup_log()
 * Summary
     * Required to incorporate logging functionality in code.
----
+
 #####skip_splash(driver, log)
 * Parameters
     * driver: Allows the program to utilize the browser in the same manner a user would
@@ -102,7 +102,7 @@ a new test.
 * Summary
     * When first navigating to the main page, the user would typically encounter a welcome splash page, this function
     would quickly navigate through the panels and close the splash page to continue onto the main page.
----
+
 #####verify_reservation_via_rooms(room, start_date, driver, log)
 * Parameters
     * room: Case-sensitive String value. Current site iteration only allows *Twin* or *Single*.
