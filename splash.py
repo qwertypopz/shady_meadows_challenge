@@ -119,5 +119,5 @@ def validate_splash_message(log):
     return False
 
 if __name__ == '__main__':
-    log = common_functions.setup_logger()
+    log = common_functions.setup_log()
     globals()[sys.argv[1]](log)

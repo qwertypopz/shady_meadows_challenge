@@ -39,5 +39,5 @@ def fill_contact(log):
     return driver.find_element_by_text('Thanks for getting in touch').is_displayed()
 
 if __name__ == '__main__':
-    log = common_functions.setup_logger()
+    log = common_functions.setup_log()
     globals()[sys.argv[1]](log)

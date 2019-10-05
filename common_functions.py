@@ -5,8 +5,6 @@ from webdriverwrapper import Firefox
 import datetime
 import logging
 
-import webdriverwrapper.unittest.testcase
-
 def admin_login(driver, log):
     '''
     Log in as administrator
@@ -16,7 +14,6 @@ def admin_login(driver, log):
     '''
     log.info("Navigating to admin panel")
     driver.get("https://automationintesting.online/#/admin")
-    #skip_splash(driver,log)
     try:
         driver.get_elm(css_selector='#username').send_keys('admin')
         driver.get_elm(css_selector='#password').send_keys('password')
@@ -149,7 +146,7 @@ def setup_driver(log):
     log.info('Driver instantiated!')
     return driver
 
-def setup_logger():
+def setup_log():
     '''
     Sets up logging functionality for testing and diagnostic purposes
     NOTE: print
@@ -175,36 +172,19 @@ def skip_splash(driver, log):
             #Utilizing break due to while condition being poorly defined. Will always be true
             break
 
-def verify_reservation_via_report(room, start_date, driver, log):
-    '''
-
-    Functions assume reservation will be under the name "Automation Test"
-    :param room: String variable denoting type of reservation ['Single', 'Double', 'Family', 'Suite']
-    :param date_start: datetime variable stating reservation start date Can be defined by datetime.datetime(YYYY, MM, DD)
-    :param driver: Allows use of browser
-    :param log: For testing and diagnostics
-    :return: Boolean value declaring success (True) or failure (False)
-    '''
-    name = "John Doe"
-    room_num = {
-        "Twin":"101",
-        "Single":"102"
-    }
-    admin_login(driver, log)
-    driver.get_elm(text="Report").click()
-    navigate_calendar(start_date, driver, log)
-    banners = driver.get_elms(xpath='//div[@class="rbc-event-content"]/text()')
-    for banner in banners:
-        log.info("Reservation: " + banner)
-
 def verify_reservation_via_rooms(room, start_date, driver, log):
     '''
+    Searches for reservation based on date for the room specified to validate reservation. This code was changed on
+    2019.10.04 as the website changed without warning. Good times.
+    Note: Sleep was used many times over as webdriverwrapper's wait_for_element function would not work. Need to be
+    revisited
     :param room: String variable denoting type of reservation ['Single', 'Double', 'Family', 'Suite']
     :param date_start: datetime variable stating reservation start date Can be defined by datetime.datetime(YYYY, MM, DD)
     :param driver: Allows use of browser
     :param log: For testing and diagnostics
     :return: Boolean value declaring success (True) or failure (False)
     '''
+    log.info("Verification through Rooms tab in Admin Panel")
     ids = {
         "Twin":"room1",
         "Single":"room2"
@@ -221,7 +201,6 @@ def verify_reservation_via_rooms(room, start_date, driver, log):
     try:
         driver.get_elm(text="Rooms").click()
     except:
-        log.info("Trying again in 3 seconds")
         sleep(3)
         driver.get_elm(text="Rooms").click()
 
@@ -230,10 +209,15 @@ def verify_reservation_via_rooms(room, start_date, driver, log):
     except:
         sleep(3)
         room_num = driver.get_elm(xpath='//*[@id="' + ids.get(room) + '"]')
-
     room_num.click()
 
+    try:
+        driver.get_elm(xpath='//*[contains(text(), "' + start_date.strftime("%Y-%m-%d") + '")]')
+    except:
+        sleep(3)
+        driver.get_elm(xpath='//*[contains(text(), "' + start_date.strftime("%Y-%m-%d") + '")]')
+
     reservation = driver.get_elm(xpath='//*[contains(text(), "' + start_date.strftime("%Y-%m-%d") + '")]')
-    log.info(reservation.is_displayed())
-    driver.quit()
+    if reservation.is_displayed():
+        log.info("Reservation has been validated")
     return reservation.is_displayed()

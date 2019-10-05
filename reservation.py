@@ -12,5 +12,5 @@ def test(log):
     #common_functions.verify_reservation_via_report("Single", start_date, driver, log)
 
 if __name__ == '__main__':
-    log = common_functions.setup_logger()
+    log = common_functions.setup_log()
     globals()[sys.argv[1]](log)
