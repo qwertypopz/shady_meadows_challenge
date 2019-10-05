@@ -49,7 +49,7 @@ energy when creating new functionality to the smoke test. Code with specific use
 organized in their respective file. Listed below are the commonly used functions that would be helpful when creating
 a new test.
 
-admin_login(driver, log)
+**admin_login(driver, log)**
 * Parameters
     * driver: Allows the program to utilize the browser in the same manner a user would.
     * log: Utilizes logging functionality for testing and diagnostic purposes.
@@ -57,7 +57,7 @@ admin_login(driver, log)
     * Logs into the back end of the website for tasks specific to website administrators such as records, business
     queries, and reservations.
 
-make_reservation(room, start_date, duration, driver, log)
+**make_reservation(room, start_date, duration, driver, log)**
 * Parameters
     * room: Case-sensitive String value. Current site iteration only allows *Twin* or *Single*.
     * start_date: datetime variable marking the starting date of the reservation
@@ -69,7 +69,7 @@ make_reservation(room, start_date, duration, driver, log)
     by passing in the required parameters. The function itself enters dummy personal information to complete the
     reservation form before submission.
 
-navigate_calendar(start_date, driver, log)
+**navigate_calendar(start_date, driver, log)**
 * Parameters
     * start_date: datetime variable marking the starting date of the reservation
     * driver: Allows the program to utilize the browser in the same manner a user would.
@@ -78,24 +78,24 @@ navigate_calendar(start_date, driver, log)
     * The website opens up on the current month's calendar. If the test case requires a starting date further in the 
     future or past, then this function will navigate through the calendar until the proper calendar month is displayed.
 
-navigate_to_main(driver, log)
+**navigate_to_main(driver, log)**
 * Parameters
     * driver: Allows the program to utilize the browser in the same manner a user would
     * log: Utilizes logging functionality for testing and diagnostic purposes
 * Summary
     * Navigates to the main page
 
-setup_driver(log)
+**setup_driver(log)**
 *Parameters
     * log: Utilizes logging functionality for testing and diagnostic purposes
 *Summary
     * This is a necessary function if the test requires any action to be done through a web browser.
 
-setup_log()
+**setup_log()**
 * Summary
     * Required to incorporate logging functionality in code.
 
-skip_splash(driver, log)
+**skip_splash(driver, log)**
 * Parameters
     * driver: Allows the program to utilize the browser in the same manner a user would
     * log: Utilizes logging functionality for testing and diagnostic purposes
@@ -103,7 +103,7 @@ skip_splash(driver, log)
     * When first navigating to the main page, the user would typically encounter a welcome splash page, this function
     would quickly navigate through the panels and close the splash page to continue onto the main page.
 
-verify_reservation_via_rooms(room, start_date, driver, log)
+**verify_reservation_via_rooms(room, start_date, driver, log)**
 * Parameters
     * room: Case-sensitive String value. Current site iteration only allows *Twin* or *Single*.
     * start_date: datetime variable marking the starting date of the reservation
