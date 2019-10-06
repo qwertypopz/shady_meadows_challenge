@@ -11,6 +11,7 @@ def action(log):
     :param log: For testing and diagnostics
     :return: Boolean value declaring pass (True) or fail (False)
     '''
+    log.info("Initiating contact form functionality test")
 
     args = {
         "input_name":"Automation Test",
@@ -62,6 +63,8 @@ def validation(args, log, driver):
     :param driver: Allows use of web browser
     :return: Boolean value declaring pass (True) or fail (False)
     '''
+    log.info("Initiating validation of contact form test")
+
     input_name = args.get("input_name")
     input_email = args.get("input_email")
     input_phone = args.get("input_phone")

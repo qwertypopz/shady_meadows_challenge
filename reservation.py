@@ -15,7 +15,6 @@ def action(args, log):
         :param start_date: datetime variable stating reservation start date Can be defined by
         datetime.datetime(YYYY, MM, DD)
         :param duration: integer variable stating duration of reservation in days
-    :param driver: Allows use of browser
     :param log: For testing and diagnostics
     :return: Boolean value declaring success (True) or failure (False)
     '''

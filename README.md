@@ -16,10 +16,11 @@ resets every ten minutes, however the reservation selections have not changed.
     * Reserve a room for any amount of time within the 35-day window displayed by the website's calendar
         * Given a start date, the program will navigate to the specified calendar month to make the reservation
     * Contact the business with pre-determined information
-* Python files have been organized by functions of the page and a common functions file which will be expanded upon:
-    * splash.py - Welcome Splash Page
-    * reservation.py - Reservation for a room
-    * contact.py - Contact Business
+* Python files have been organized by functions of the page and a common functions file, all of which will be expanded 
+upon:
+    * splash.py - Validation of the welcome splash page
+    * reservation.py - Reservation functionality of the page including validation through the admin panel
+    * contact.py - Contact the business owner including validation through the admin panel
     * common_functions.py - Common Functions
 * Useful blocks of code have been compiled in the common_functions.py file to be used as needed during testing.
 * Verbose documentation within code to assist the developer better understand the functionality and better utilize the 
@@ -43,13 +44,46 @@ Download and install the [Firefox web browser](https://www.mozilla.org/en-US/fir
 ### Geckodriver
 Download and unzip [geckodriver](https://github.com/mozilla/geckodriver/releases) into the same directory as the Python 
 project if it does not already exist
-## Common Functions
-Commonly used functions have been compiled into the *common_functions.py* file with the intent of saving time and
-energy when creating new functionality to the smoke test. Code with specific use-case are typically
-organized in their respective file. Listed below are the commonly used functions that would be helpful when creating
-a new test.
+## Functions
+Commonly used functions have been compiled into each of the aforementioned python files, generally organized by their
+use case. If the functionality applies to general use of the site, they will be organized into the common_functions.py 
+file. These functions were created with the intent of saving time and energy when adding new functionality to the smoke 
+test. Listed below are the functions that would be helpful when creating a new test. To use these functions, the 
+developer must import the respective python file to their test.
 
-**admin_login(driver, log)**
+**splash.validate(log)**
+* Location
+    * splash.py
+* Parameters
+    * log: Utilizes logging functionality for testing and diagnostic purposes
+* Summary
+    * Validates each page of the welcome splash page before closing the browser
+    
+**reservation.action(args, log)**
+* Location
+    * reservation.py
+* Parameters
+    * args: This is a dictionary variable with the following key value pairs:
+        * room: String variable denoting type of reservation ('Single', 'Double', 'Family', 'Suite')
+        * start_date: datetime variable stating reservation start date Can be defined by datetime.datetime(YYYY, MM, DD)
+        * duration: integer variable stating duration of reservation in days
+    * log: Utilizes logging functionality for testing and diagnostic purposes
+* Summary
+    * The main user-side function of the website. Developers are able to emulate user behavior in making a reservation
+    by passing in the required parameters. The function itself enters dummy personal information to complete the
+    reservation form before submission.
+
+**contact.action(log)**
+* Location
+    * contact.py
+* Parameters
+    * log: Utilizes logging functionality for testing and diagnostic purposes.
+* Summary
+    * Fills out contact form with pre-determined information and then validates through the admin panel
+
+**common_functions.admin_login(driver, log)**
+* Location
+    * common_functions.py
 * Parameters
     * driver: Allows the program to utilize the browser in the same manner a user would.
     * log: Utilizes logging functionality for testing and diagnostic purposes.
@@ -57,19 +91,9 @@ a new test.
     * Logs into the back end of the website for tasks specific to website administrators such as records, business
     queries, and reservations.
 
-**make_reservation(room, start_date, duration, driver, log)**
-* Parameters
-    * room: Case-sensitive String value. Current site iteration only allows *Twin* or *Single*.
-    * start_date: datetime variable marking the starting date of the reservation
-    * duration: int variable stating the length of stay 
-    * driver: Allows the program to utilize the browser in the same manner a user would.
-    * log: Utilizes logging functionality for testing and diagnostic purposes
-* Summary
-    * The main user-side function of the website. Developers are able to emulate user behavior in making a reservation
-    by passing in the required parameters. The function itself enters dummy personal information to complete the
-    reservation form before submission.
-
-**navigate_calendar(start_date, driver, log)**
+**common_functions.navigate_calendar(start_date, driver, log)**
+* Location
+    * common_functions.py
 * Parameters
     * start_date: datetime variable marking the starting date of the reservation
     * driver: Allows the program to utilize the browser in the same manner a user would.
@@ -78,37 +102,35 @@ a new test.
     * The website opens up on the current month's calendar. If the test case requires a starting date further in the 
     future or past, then this function will navigate through the calendar until the proper calendar month is displayed.
 
-**navigate_to_main(driver, log)**
+**common_functions.navigate_to_main(driver, log)**
+* Location
+    * common_functions.py
 * Parameters
     * driver: Allows the program to utilize the browser in the same manner a user would
     * log: Utilizes logging functionality for testing and diagnostic purposes
 * Summary
     * Navigates to the main page
 
-**setup_driver(log)**
+**common_functions.setup_driver(log)**
+* Location
+    * common_functions.py
 * Parameters
     * log: Utilizes logging functionality for testing and diagnostic purposes
 * Summary
     * This is a necessary function if the test requires any action to be done through a web browser.
 
-**setup_log()**
+**common_functions.setup_log()**
+* Location
+    * common_functions.py
 * Summary
     * Required to incorporate logging functionality in code.
 
-**skip_splash(driver, log)**
+**common_functions.skip_splash(driver, log)**
+* Location
+    * common_functions.py
 * Parameters
     * driver: Allows the program to utilize the browser in the same manner a user would
     * log: Utilizes logging functionality for testing and diagnostic purposes
 * Summary
     * When first navigating to the main page, the user would typically encounter a welcome splash page, this function
     would quickly navigate through the panels and close the splash page to continue onto the main page.
-
-**verify_reservation_via_rooms(room, start_date, driver, log)**
-* Parameters
-    * room: Case-sensitive String value. Current site iteration only allows *Twin* or *Single*.
-    * start_date: datetime variable marking the starting date of the reservation
-    * driver: Allows the program to utilize the browser in the same manner a user would.
-    * log: Utilizes logging functionality for testing and diagnostic purposes
-* Summary
-    * This function navigates to the admin panel in order to validate that a reservation has been made given the type
-    of reservation and starting date.
