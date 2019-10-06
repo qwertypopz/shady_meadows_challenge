@@ -11,7 +11,7 @@ import datetime
 
 def splash_single_now_2(log):
     '''
-    Create a reservation for a Single room today for two days
+    Validate splash page and then create a reservation for a Single room today for two days
     '''
     args = {
         "room":"Single",
@@ -23,7 +23,8 @@ def splash_single_now_2(log):
 
 def contact_twin_thanksgiving_3(log):
     '''
-    Create a reservation for a Twin room for Thanksgiving for three days
+    Email the business through the contact form and then create a reservation for a Twin room for Thanksgiving for
+    three days
     '''
     args = {
         "room":"Twin",
