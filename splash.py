@@ -16,7 +16,7 @@ def splash_exists(driver, log):
     '''
     common_functions.navigate_to_main(driver, log)
     #It's ugly but the element has no name or id
-    splash = driver.get_elm(xpath='/html/body/div/div[1]/div[2]/div/div')
+    splash = driver.get_elm(text="Welcome to Restful Booker Platform")
     return splash.is_displayed()
 
 def page_1(driver, log):
@@ -105,7 +105,7 @@ def page_5(driver, log):
     return False
 
 
-def validate_splash_message(log):
+def validate(log):
     '''
     Checks that the splash page has the expected message
     :param log: For testing and diagnostics
