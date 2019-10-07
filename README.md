@@ -29,6 +29,8 @@ existing code.
 This documentation assumes that the user is familiar with Python and is using a Windows machine with an IDE configured 
 for Python projects
 ## Requirements
+### Python 3.x
+Install the latest version of Python 3.x following [these directions](https://realpython.com/installing-python/#windows)
 ### Selenium
 Within the Windows Command Prompt, enter the following command:
 ```bash
