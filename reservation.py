@@ -3,6 +3,7 @@ Make reservations
 '''
 import common_functions
 import datetime
+import sys
 
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
@@ -140,3 +141,7 @@ def validate_rooms(args, log, driver):
     if reservation.is_displayed():
         log.info("Reservation has been validated")
     return reservation.is_displayed()
+
+if __name__ == '__main__':
+    log = common_functions.setup_log()
+    globals()[sys.argv[1]](log)

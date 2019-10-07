@@ -44,6 +44,44 @@ Download and install the [Firefox web browser](https://www.mozilla.org/en-US/fir
 ### Geckodriver
 Download and unzip [geckodriver](https://github.com/mozilla/geckodriver/releases) into the same directory as the Python 
 project if it does not already exist
+## Examples
+Examples similar to the one below can be found within examples.py:
+```python
+import common_functions
+import reservation
+import datetime
+import sys
+
+def test_single_now_5(log):
+    '''
+    This will create a reservation for the Single room for five days starting today.
+    '''
+    args = {
+        "room":"Single",
+        "start_date":datetime.datetime.now(),
+        "duration":5
+    }
+    reservation.action(args, log)
+
+if __name__ == '__main__':
+    log = common_functions.setup_log()
+    globals()[sys.argv[1]](log)
+```
+Due to the structure of reservation.action(args, log), the developer will only need to pass the absolute minimum number 
+arguments in order to create a reservation for a specified room. The examples within examples.py expand on tests further 
+to include filling out the contact form as well as navigating through the splash welcome screen.
+
+Looking at the example above, below the function *test_single_now_5(log)*, there is another function. What this code does is 
+allow code to be run off the command line which is the preferred method here. Assuming the current working directory is
+the same one the repository exists, the python code can be executed with the following format:
+```bash
+python <file_name> <function_name>
+```  
+So based on the above format, to execute *test_splash_single_now_2(log)* within *examples.py*, the developer will 
+execute the following command in the proper working directory:
+```bash
+python examples.py test_splash_single_now_2
+```
 ## Functions
 Commonly used functions have been compiled into each of the aforementioned python files, generally organized by their
 use case. If the functionality applies to general use of the site, they will be organized into the common_functions.py 
@@ -55,19 +93,20 @@ developer must import the respective python file to their test.
 * Location
     * splash.py
 * Parameters
-    * log: Utilizes logging functionality for testing and diagnostic purposes
+    * log: Utilizes logging functionality for testing and diagnostic purposes.
 * Summary
-    * Validates each page of the welcome splash page before closing the browser
+    * Validates each page of the welcome splash page before closing the browser.
     
 **reservation.action(args, log)**
 * Location
     * reservation.py
 * Parameters
     * args: This is a dictionary variable with the following key value pairs:
-        * room: String variable denoting type of reservation ('Single', 'Double', 'Family', 'Suite')
-        * start_date: datetime variable stating reservation start date Can be defined by datetime.datetime(YYYY, MM, DD)
-        * duration: integer variable stating duration of reservation in days
-    * log: Utilizes logging functionality for testing and diagnostic purposes
+        * room: String variable denoting type of reservation ('Single', 'Double', 'Family', 'Suite').
+        * start_date: datetime variable stating reservation start date Can be defined by 
+        datetime.datetime(YYYY, MM, DD).
+        * duration: integer variable stating duration of reservation in days.
+    * log: Utilizes logging functionality for testing and diagnostic purposes.
 * Summary
     * The main user-side function of the website. Developers are able to emulate user behavior in making a reservation
     by passing in the required parameters. The function itself enters dummy personal information to complete the
@@ -79,7 +118,7 @@ developer must import the respective python file to their test.
 * Parameters
     * log: Utilizes logging functionality for testing and diagnostic purposes.
 * Summary
-    * Fills out contact form with pre-determined information and then validates through the admin panel
+    * Fills out contact form with pre-determined information and then validates through the admin panel.
 
 **common_functions.admin_login(driver, log)**
 * Location
@@ -95,9 +134,9 @@ developer must import the respective python file to their test.
 * Location
     * common_functions.py
 * Parameters
-    * start_date: datetime variable marking the starting date of the reservation
+    * start_date: datetime variable marking the starting date of the reservation.
     * driver: Allows the program to utilize the browser in the same manner a user would.
-    * log: Utilizes logging functionality for testing and diagnostic purposes
+    * log: Utilizes logging functionality for testing and diagnostic purposes.
 * Summary
     * The website opens up on the current month's calendar. If the test case requires a starting date further in the 
     future or past, then this function will navigate through the calendar until the proper calendar month is displayed.
@@ -106,16 +145,16 @@ developer must import the respective python file to their test.
 * Location
     * common_functions.py
 * Parameters
-    * driver: Allows the program to utilize the browser in the same manner a user would
-    * log: Utilizes logging functionality for testing and diagnostic purposes
+    * driver: Allows the program to utilize the browser in the same manner a user would.
+    * log: Utilizes logging functionality for testing and diagnostic purposes.
 * Summary
-    * Navigates to the main page
+    * Navigates to the main page.
 
 **common_functions.setup_driver(log)**
 * Location
     * common_functions.py
 * Parameters
-    * log: Utilizes logging functionality for testing and diagnostic purposes
+    * log: Utilizes logging functionality for testing and diagnostic purposes.
 * Summary
     * This is a necessary function if the test requires any action to be done through a web browser.
 
@@ -129,8 +168,8 @@ developer must import the respective python file to their test.
 * Location
     * common_functions.py
 * Parameters
-    * driver: Allows the program to utilize the browser in the same manner a user would
-    * log: Utilizes logging functionality for testing and diagnostic purposes
+    * driver: Allows the program to utilize the browser in the same manner a user would.
+    * log: Utilizes logging functionality for testing and diagnostic purposes.
 * Summary
     * When first navigating to the main page, the user would typically encounter a welcome splash page, this function
     would quickly navigate through the panels and close the splash page to continue onto the main page.
