@@ -112,10 +112,11 @@ def validate_rooms(args, log, driver):
     start_date = reservation_args.get("start_date")
     duration = reservation_args.get("duration")
     ids = {
-        "Twin":"room1",
-        "Single":"room2"
-        #"Family":"room3",
-        #"Suite":"room4"
+        "Twin":"typeTwin",
+        "Single":"typeSingle",
+        "Double":"typeDouble",
+        "Family":"typeFamily",
+        "Suite":"typeSuite"
     }
     common_functions.admin_login(driver, log)
     try:
